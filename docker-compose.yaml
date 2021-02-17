@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  wms-ui:
+    build: .
+    image: sourcecheck/wms-ui
+    container_name: sc-wms-ui
+    env_file: 
+      - .env.build
+      
+networks:
+  default:
+    external:
+      name: webproxy
