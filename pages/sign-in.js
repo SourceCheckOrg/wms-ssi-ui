@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
-import Head from 'next/head'
-import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
+import React, { useState, useEffect, useContext } from "react";
+import Router from "next/router";
+import Cookie from "js-cookie";
 import QRCode from 'qrcode.react';
 import socketIoClient from "socket.io-client";
 import { v4 as uuidv4} from 'uuid';
+import AppContext from "../context/AppContext";
 
 const API_HOST=process.env.NEXT_PUBLIC_API_HOST;
 const SSI_SIGNIN_PATH=process.env.NEXT_PUBLIC_SSI_SIGNIN_PATH;
 const SSI_SIGNIN_URL=`${API_HOST}${SSI_SIGNIN_PATH}`;
 
 export default function SignIn() {
+  const { user, setUser } = useContext(AppContext);
+
   const [challenge, setChallenge] = useState()
   console.log('SignIn - render page');
   console.log('SignIn - challenge: ', challenge);
@@ -28,8 +30,13 @@ export default function SignIn() {
       console.log("Received hello from server: ", data)
     });
 
-    socket.on("jwt", jwt => {
-      console.log("Received jwt token:", jwt)
+    // TODO handle sign in errors (like user not registered etc)
+
+    socket.on("auth", auth => {
+      console.log("Received jwt token:", auth.jwt)
+      Cookie.set("token", auth.jwt);
+      setUser(auth.user);
+      Router.push("/");
     });
 
     socket.emit('client-token-sub', uuid);
@@ -42,10 +49,7 @@ export default function SignIn() {
   const url = `${SSI_SIGNIN_URL}?challenge=${challenge}`;
   console.log('Sign In - SSI sign in url: ', url);
   return (
-    <Layout>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
+    <>
       <div>
         <h2>Sign In</h2>
         <p>Challenge: {challenge}</p>
@@ -60,6 +64,6 @@ export default function SignIn() {
           />
         </div>
       </div>
-    </Layout>
+    </>
   )
 }
