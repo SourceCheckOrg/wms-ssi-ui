@@ -26,7 +26,7 @@ export default function SignIn() {
     let socket = socketIoClient(API_HOST);
     
     socket.on('hello', data => {
-      console.log('Received hello from server: ', data)
+      console.log('Socked connection established: ', data);
     });
 
     // TODO handle sign in errors (like user not registered etc)
@@ -34,7 +34,7 @@ export default function SignIn() {
     socket.on('auth', auth => {
       Cookie.set('token', auth.jwt);
       api.defaults.headers.Authorization = `Bearer ${auth.jwt}`;
-      const goTo = redirectTo ? redirectTo : '/dashboard'
+      const goTo = redirectTo ? redirectTo : '/profile';
       setRedirectTo(null);
       setUser(auth.user);
       router.push(goTo);
