@@ -50,33 +50,34 @@ export default function Publication() {
 
   // Handle form submission
   async function onSubmit (e) {
-    e.preventDefault()
+    e.preventDefault();
     setSaving(true);
 
     const isNew = !id;
     const method = isNew ? 'POST' : 'PUT';
     const url = isNew ? PUBLICATION_PATH : `${PUBLICATION_PATH}/${id}`;
-    const data = { id, title, slug, royalty_structure }
+    const data = { id, title, slug, royalty_structure };
 
     // Request data and headers
-    const formData = new FormData()
+    const formData = new FormData();
     formData.append('data', JSON.stringify(data));
-    formData.append('files.pdf_raw', pdfRaw)
+    formData.append('files.pdf_raw', pdfRaw);
     const headers = { 'Content-Type': 'multipart/form-data' };
 
     try {
       const response = await api.request({ method, url, data: formData, headers });
       const savedPublication = response.data;
       setSaving(false);
-      setSaveSuccess(true)
+      setSaveSuccess(true);
       if (isNew) {
-        setId(savedPublication.id);
-        router.push(`/publication/${newId}`, undefined, { shallow: true })
+        const newId = savedPublication.id;
+        setId(newId);
+        router.push(`/publication/${newId}`, undefined, { shallow: true });
       }
-      setTimeout(() => setSaveSuccess(false), 2000)
+      setTimeout(() => setSaveSuccess(false), 2000);
     } catch (err) {
       setSaveError(true);
-      setTimeout(() => setSaveError(false), 2000)
+      setTimeout(() => setSaveError(false), 2000);
     }
   }
 

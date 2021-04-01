@@ -33,8 +33,8 @@ export default function RoyaltyStructure() {
   // UI state
   const [selected, setSelected] = useState(1);
   const [saving, setSaving] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false)
-  const [saveError, setSaveError] = useState(false)
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState(false);
   const blankAlias = useRef(null);
   
   // Update Royalty Structure state on data fetch
@@ -50,7 +50,7 @@ export default function RoyaltyStructure() {
   // Focus on 'alias' field when adding a new payee
   useEffect(() => {
     if (blankAlias && blankAlias.current) blankAlias.current.focus();
-  }, [payees])
+  }, [payees]);
 
   // Change property of payee
   function onChangePayeeProp(idx, prop, value) {
@@ -67,7 +67,7 @@ export default function RoyaltyStructure() {
 
   // Add payee
   function addPayee() {
-    const blankPayee = { alias: '', identifier: '', amount: '', denomination: '%' }
+    const blankPayee = { alias: '', identifier: '', amount: '', denomination: '%' };
     const updatedPayees = [ ...payees, blankPayee];
     setPayees(updatedPayees);
     setSelected(updatedPayees.length - 1);
@@ -82,7 +82,7 @@ export default function RoyaltyStructure() {
 
   // Handle form submission
   async function onSubmit (e) {
-    e.preventDefault()
+    e.preventDefault();
     setSaving(true);
    
     const isNew = !id;
@@ -97,13 +97,14 @@ export default function RoyaltyStructure() {
       setSaving(false);
       setSaveSuccess(true);
       if (isNew) {
-        setId(savedRoyaltyStructure.id);
-        router.push(`/royalty-structure/${newId}`, undefined, { shallow: true })
+        const newId = savedRoyaltyStructure.id;
+        setId(newId);
+        router.push(`/royalty-structure/${newId}`, undefined, { shallow: true });
       }
-      setTimeout(() => setSaveSuccess(false), 2000)
+      setTimeout(() => setSaveSuccess(false), 2000);
     } catch (err) {
       setSaveError(true);
-      setTimeout(() => setSaveError(false), 2000)
+      setTimeout(() => setSaveError(false), 2000);
     }
   }
 
