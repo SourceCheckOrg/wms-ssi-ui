@@ -4,6 +4,7 @@ import useSWR from 'swr'
 import PulseLoader from 'react-spinners/PulseLoader';
 import { useAuth } from '../../context/auth';
 import api from '../../lib/api';
+import Protected from '../../components/Protected';
 import Layout from '../../components/AppLayout';
 import NotificationPanel from '../../components/NotificationPanel';
 import getIcon from '../../components/Icons';
@@ -182,81 +183,83 @@ export default function RoyaltyStructure() {
   }
 
   return (
-    <Layout>
-      <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none" tabIndex="0">
-        <div className="py-6">
-          <div className="max-w-7xl mx-auto mb-4 px-4 sm:px-6 md:px-8">
-            <h1 className="text-2xl font-semibold text-gray-900">Royalty Structure</h1>
-          </div>
-          <NotificationPanel show={saveSuccess} bgColor="bg-green-100" message="Royalty Structure Saved!" />
-          <NotificationPanel show={saveError} bgColor="bg-red-100" message="Error saving Royalty Structure!" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-            <div id="new-publication-form" className="mt-5 md:mt-0 md:col-span-2">
-              <form onSubmit={onSubmit}>
-                <div className="shadow sm:rounded-md sm:overflow-hidden">
-                  <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-                    <div className="col-span-6 sm:col-span-4">
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-                      <input 
-                        type="text" 
-                        name="name" 
-                        value={name}
-                        onChange={evt => setName(evt.target.value)}
-                        required
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-4">
-                      <label htmlFor="wms_account" className="block text-sm font-medium text-gray-700">WMS Account</label>
-                      <input 
-                        type="text" 
-                        name="wms_account"
-                        value={wms_account}
-                        onChange={evt => setWmsAccount(evt.target.value)} 
-                        required
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-4">
-                      <label htmlFor="publisher" className="block text-sm font-medium text-gray-700">Payees</label>
-                      <div className="flex flex-col">
-                        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                              <div className="min-w-full">
-                                  { renderPayees(payees || [], selected) }
-                                  <div className="bg-white text-center">
-                                    <div>
-                                      <button type="button" onClick={addPayee} className="h-10 my-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-300 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                        Add Payee
-                                      </button>
+    <Protected>
+      <Layout>
+        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none" tabIndex="0">
+          <div className="py-6">
+            <div className="max-w-7xl mx-auto mb-4 px-4 sm:px-6 md:px-8">
+              <h1 className="text-2xl font-semibold text-gray-900">Royalty Structure</h1>
+            </div>
+            <NotificationPanel show={saveSuccess} bgColor="bg-green-100" message="Royalty Structure Saved!" />
+            <NotificationPanel show={saveError} bgColor="bg-red-100" message="Error saving Royalty Structure!" />
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+              <div id="new-publication-form" className="mt-5 md:mt-0 md:col-span-2">
+                <form onSubmit={onSubmit}>
+                  <div className="shadow sm:rounded-md sm:overflow-hidden">
+                    <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+                      <div className="col-span-6 sm:col-span-4">
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+                        <input 
+                          type="text" 
+                          name="name" 
+                          value={name}
+                          onChange={evt => setName(evt.target.value)}
+                          required
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                        />
+                      </div>
+                      <div className="col-span-6 sm:col-span-4">
+                        <label htmlFor="wms_account" className="block text-sm font-medium text-gray-700">WMS Account</label>
+                        <input 
+                          type="text" 
+                          name="wms_account"
+                          value={wms_account}
+                          onChange={evt => setWmsAccount(evt.target.value)} 
+                          required
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
+                        />
+                      </div>
+                      <div className="col-span-6 sm:col-span-4">
+                        <label htmlFor="publisher" className="block text-sm font-medium text-gray-700">Payees</label>
+                        <div className="flex flex-col">
+                          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                              <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                <div className="min-w-full">
+                                    { renderPayees(payees || [], selected) }
+                                    <div className="bg-white text-center">
+                                      <div>
+                                        <button type="button" onClick={addPayee} className="h-10 my-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-300 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                          Add Payee
+                                        </button>
+                                      </div>
                                     </div>
-                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                    <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                      { saving ? (
+                          <div className="inline-block text-center py-2 px-2 border border-transparent shadow-sm rounded-md h-10 w-20 bg-indigo-600 hover:bg-indigo-700">
+                            <PulseLoader color="white" loading={saving} size={9} /> 
+                          </div>
+                        ) : (
+                          <button type="submit" className="h-10 w-20 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Save
+                          </button>
+                        ) 
+                      }
+                    </div>
                   </div>
-                  <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                    { saving ? (
-                        <div className="inline-block text-center py-2 px-2 border border-transparent shadow-sm rounded-md h-10 w-20 bg-indigo-600 hover:bg-indigo-700">
-                          <PulseLoader color="white" loading={saving} size={9} /> 
-                        </div>
-                      ) : (
-                        <button type="submit" className="h-10 w-20 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                          Save
-                        </button>
-                      ) 
-                    }
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-    </Layout>
+        </main>
+      </Layout>
+    </Protected>
   );
 }

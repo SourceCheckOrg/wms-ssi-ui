@@ -13,10 +13,10 @@ const SSI_SIGNIN_PATH=process.env.NEXT_PUBLIC_SSI_SIGNIN_PATH;
 const SSI_SIGNIN_URL=`${API_HOST}${SSI_SIGNIN_PATH}`;
 
 export default function SignIn() {
-  const { redirectTo, setRedirectTo, setUser } = useAuth();
+  const { setUser } = useAuth();
   const [challenge, setChallenge] = useState()
   const router = useRouter()
-  
+ 
   // Create socket on component mount
   useEffect(() => {
 
@@ -34,10 +34,8 @@ export default function SignIn() {
     socket.on('auth', auth => {
       Cookie.set('token', auth.jwt);
       api.defaults.headers.Authorization = `Bearer ${auth.jwt}`;
-      const goTo = redirectTo ? redirectTo : '/profile';
-      setRedirectTo(null);
       setUser(auth.user);
-      router.push(goTo);
+      router.push('/profile');
     });
 
     socket.emit('client-token-sub', uuid);

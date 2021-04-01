@@ -4,6 +4,7 @@ import useSWR from 'swr'
 import PulseLoader from 'react-spinners/PulseLoader';
 import { useAuth } from '../../context/auth';
 import api from '../../lib/api';
+import Protected from '../../components/Protected';
 import Layout from '../../components/AppLayout';
 import NotificationPanel from '../../components/NotificationPanel';
 import SelectField from '../../components/SelectField';
@@ -82,7 +83,8 @@ export default function Publication() {
   }
 
   return (
-    <Layout>
+    <Protected>
+      <Layout>
       <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none" tabIndex="0">
         <div className="py-6">
           <div className="max-w-7xl mx-auto mb-4 px-4 sm:px-6 lg:px-8">
@@ -165,5 +167,6 @@ export default function Publication() {
         </div>
       </main>
     </Layout>
+    </Protected>
   );
 }
