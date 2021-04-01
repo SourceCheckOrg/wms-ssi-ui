@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import DesktopMenu from "../components/DesktopMenu";
-import MobileMenu from "../components/MobileMenu";
-import OpenSideBar from "../components/OpenSidebar";
+import DesktopMenu from "./DesktopMenu";
+import MobileMenu from "./MobileMenu";
+import OpenSideBar from "./OpenSidebar";
 
 const menuItems = [
   /*

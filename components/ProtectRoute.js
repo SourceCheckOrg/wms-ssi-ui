@@ -7,7 +7,7 @@ const ALLOWED_PAGES = ['Home', 'WebMonetization', 'About', 'SignIn', 'SignUp']
 
 export const ProtectRoute = ({ children }) => {
   const router = useRouter()
-  const { isAuthenticated, loading, setRedirectTo } = useAuth();
+  const { loading, isAuthenticated, setRedirectTo } = useAuth();
   const isProtected = ALLOWED_PAGES.indexOf(children.type.name) == -1;
 
   /*
@@ -15,7 +15,7 @@ export const ProtectRoute = ({ children }) => {
   console.log('isProtected: ', isProtected);
   console.log('loading: ', loading);
   console.log('isAuthenticated: ', isAuthenticated);
-  console.log('isReady: ', isReady);
+  console.log('isReady: ', isReady);  
   */
 
   useEffect(() => {
@@ -27,11 +27,11 @@ export const ProtectRoute = ({ children }) => {
         router.push('/sign-in');
       }
     }
-  },[]);
+  },[loading]);
 
-  if (isProtected && !isAuthenticated) {
+  if (loading || (isProtected && !isAuthenticated)) {
     return (
-      <div class="flex h-screen justify-center items-center">
+      <div className="flex h-screen justify-center items-center">
         <PuffLoader color="blue" loading={true} size={200} /> 
       </div>
     );

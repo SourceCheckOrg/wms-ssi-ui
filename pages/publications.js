@@ -3,7 +3,7 @@ import useSWR, { mutate } from 'swr'
 import Link from 'next/link';
 import { useAuth } from '../context/auth';
 import api from '../lib/api';
-import Layout from '../components/Layout';
+import Layout from '../components/AppLayout';
 import Modal from '../components/Modal';
 import NotificationPanel from '../components/NotificationPanel';
 import getIcon from '../components/Icons';

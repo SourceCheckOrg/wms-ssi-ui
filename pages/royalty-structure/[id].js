@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import PulseLoader from 'react-spinners/PulseLoader';
 import { useAuth } from '../../context/auth';
 import api from '../../lib/api';
-import Layout from '../../components/Layout';
+import Layout from '../../components/AppLayout';
 import NotificationPanel from '../../components/NotificationPanel';
 import getIcon from '../../components/Icons';
 

@@ -8,7 +8,7 @@ const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [redirectTo, setRedirectTo] = useState('/dashboard');
+  const [redirectTo, setRedirectTo] = useState(null);
 
   useEffect(() => {
     async function loadUserFromCookies() {
