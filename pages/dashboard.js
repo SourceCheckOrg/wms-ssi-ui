@@ -1,5 +1,5 @@
 
-import { Protected } from '../components/Protected';
+import Protected from '../components/Protected';
 import Layout from '../components/AppLayout';
 
 export default function Dashboard() {
