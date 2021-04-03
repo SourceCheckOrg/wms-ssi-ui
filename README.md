@@ -1,3 +1,54 @@
-# SourceCheck WMS UI
+# SourceCheck WMS SSI UI
 
-Frontend App (Web UI) for WMS project
+Frontend App (Web UI) for WMS SSI project.
+
+The application is based on the [Next.js](https://nextjs.org/) framework.
+
+It's necessary to have the backend application (API server) running. More information on that can be found in the [WMS SSI API](https://github.com/SourceCheckOrg/wms-ssi-api) respository. 
+
+
+## Development environment setup
+
+
+### Node.js
+
+A recent version of Node.js is required to run the Web UI app.
+
+Our recommended way to install Node.js in Linux and MacOS environments is using Node Version Manager [nvm](https://github.com/nvm-sh/nvm).
+
+The code was created using `v14.15.3`.
+
+
+### SSI tooling
+
+The WMS SSI project depends on SSI components developed by Spruce (https://spruceid.dev/docs/).
+
+The frontend application (Web UI) requires Spruce's Credible wallet for the sign up process as well as for signing in.
+
+
+### Installing WMS SSI UI code
+
+Clone this repository:
+```
+$ git clone https://github.com/SourceCheckOrg/wms-ssi-ui.git
+```
+
+Install the dependencies
+```
+$ cd wms-ssi-ui
+$ npm install
+```
+
+Setup the environment variable `NEXT_PUBLIC_API_HOST` in the file `.env.development`. It should point to the URL of the API server.
+
+
+Start the Web UI:
+```
+$ npm run dev
+```
+
+The Web UI will be available on the following URL:
+
+```
+http://localhost:3000
+```
