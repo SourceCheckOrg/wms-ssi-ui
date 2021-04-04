@@ -1,30 +1,34 @@
 # SourceCheck WMS SSI UI
 
-Frontend App (Web UI) for WMS SSI project.
+Frontend App (Web UI) for SourceCheck's [WMS SSI
+project](https://github.com/SourceCheckOrg/wms-ssi-prototype).
 
 The application is based on the [Next.js](https://nextjs.org/) framework.
 
-It's necessary to have the backend application (API server) running. More information on that can be found in the [WMS SSI API](https://github.com/SourceCheckOrg/wms-ssi-api) respository. 
-
+It's necessary to have the backend application (API server) running. More
+information on that can be found in the [WMS SSI
+API](https://github.com/SourceCheckOrg/wms-ssi-api) repository. 
 
 ## Development environment setup
-
 
 ### Node.js
 
 A recent version of Node.js is required to run the Web UI app.
 
-Our recommended way to install Node.js in Linux and MacOS environments is using Node Version Manager [nvm](https://github.com/nvm-sh/nvm).
+We recommended using Node Version Manager [nvm](https://github.com/nvm-sh/nvm)
+to install Node.js in Linux and MacOS environments.
 
 The code was created using `v14.15.3`.
 
-
 ### SSI tooling
 
-The WMS SSI project depends on SSI components developed by Spruce (https://spruceid.dev/docs/).
+The WMS SSI project depends on SSI components developed by [Spruce
+Systems](https://spruceid.com). See their [Developer
+Portal](https://spruceid.dev/docs/) for more information.
 
-The frontend application (Web UI) requires Spruce's Credible wallet for the sign up process as well as for signing in.
-
+The frontend application (Web UI) requires Spruce's Credible wallet for the sign
+up process as well as for signing in. Any standards-conformant SSI wallet should
+be usable in its place with a little effort.
 
 ### Installing WMS SSI UI code
 
@@ -39,7 +43,8 @@ $ cd wms-ssi-ui
 $ npm install
 ```
 
-Setup the environment variable `NEXT_PUBLIC_API_HOST` in the file `.env.development`. It should point to the URL of the API server.
+Setup the environment variable `NEXT_PUBLIC_API_HOST` in the file
+`.env.development`. It should point to the URL of the API server.
 
 
 Start the Web UI:
