@@ -24,7 +24,8 @@ export default function Publication() {
 
   // Publication state
   const [id, setId] = useState();
-  const [pdfRaw, setPdfRaw] = useState([]);
+  const [pdfRaw, setPdfRaw] = useState(null);
+  const [pdfRawData, setPdfRawData] = useState(null);
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [royalty_structure, setRoyaltyStructure] = useState(null);
@@ -41,12 +42,30 @@ export default function Publication() {
       setTitle(publication.title);
       setSlug(publication.slug);
       setRoyaltyStructure(publication.royalty_structure ? publication.royalty_structure.id : null);
+      if (publication.pdf_raw) {
+        setPdfRawData({ 
+          name: publication.pdf_raw.name,
+          size: publication.pdf_raw.size,
+        });
+      }
     }
   }, [publication])
 
   // Handle file upload
-  function onFileUpload (event) {
-    setPdfRaw(event.target.files[0]);
+  function onFileUpload (evt) {
+    const file = evt.target.files[0];
+    setPdfRaw(file);
+    setPdfRawData({
+      name: file.name,
+      size: file.size, // TODO format in kB or mB
+    })
+  }
+
+  // Handle file remove
+  function onFileRemove(evt) {
+    evt.preventDefault();
+    setPdfRaw(null);
+    setPdfRawData(null);
   }
 
   // Handle form submission
@@ -60,13 +79,22 @@ export default function Publication() {
     const data = { id, title, slug, royalty_structure };
 
     // Request data and headers
-    const formData = new FormData();
-    formData.append('data', JSON.stringify(data));
-    formData.append('files.pdf_raw', pdfRaw);
-    const headers = { 'Content-Type': 'multipart/form-data' };
+    const hasFile = pdfRaw && pdfRawData;
+
+    let formData;
+    let contentType;
+    if (hasFile) {
+      formData = new FormData();
+      formData.append('data', JSON.stringify(data));
+      formData.append('files.pdf_raw', pdfRaw);
+      contentType = 'multipart/form-data';
+    } else {
+      formData = pdfRawData ? data : { ...data, pdf_raw: null};
+      contentType = 'application/json';
+    }
 
     try {
-      const response = await api.request({ method, url, data: formData, headers });
+      const response = await api.request({ method, url, data: formData, headers: {'Content-Type': contentType} });
       const savedPublication = response.data;
       setSaving(false);
       setSaveSuccess(true);
@@ -136,14 +164,30 @@ export default function Publication() {
                           <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                             <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
-                          <div className="flex text-sm text-gray-600">
-                            <label htmlFor="raw_pdf" className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                              <span>Upload a file</span>
-                              <input id="raw_pdf" name="raw_pdf" type="file" className="sr-only" onChange={onFileUpload}/>
-                            </label>
-                            <p className="pl-1">or drag and drop</p>
-                          </div>
-                          <p className="text-xs text-gray-500">PDF up to 30MB</p>
+                          {
+                            pdfRawData && pdfRawData.name ?  (
+                              <>
+                                <p className="text-sm text-gray-500">{pdfRawData.name} ({pdfRawData.size})</p>
+                                <div className="inline-block flex justify-center font-medium text-sm text-indigo-600">
+                                  <label htmlFor="raw_pdf" className="cursor-pointer rounded-md hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Replace</span><input id="raw_pdf" name="raw_pdf" type="file" className="sr-only" onChange={onFileUpload}/>
+                                  </label>
+                                  <span className="pl-1 hover:text-indigo-500"> / <button onClick={onFileRemove}>Remove</button></span>
+                                </div> 
+                              </>
+                            ) : (
+                              <>
+                                <div className="flex text-sm text-gray-600">
+                                  <label htmlFor="raw_pdf" className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Upload a file</span>
+                                    <input id="raw_pdf" name="raw_pdf" type="file" className="sr-only" onChange={onFileUpload}/>
+                                  </label>
+                                  <p className="pl-1">or drag and drop</p>
+                                </div>
+                                <p className="text-xs text-gray-500">PDF up to 30MB</p>
+                              </>
+                            )
+                          }
                         </div>
                       </div>
                     </div>

@@ -14,10 +14,16 @@ export const AuthProvider = ({ children }) => {
       const token = Cookies.get('token');
       if (token) {
         api.defaults.headers.Authorization = `Bearer ${token}`;
-        const res = await api.get('users/me');
-        const fetchedUser = res.data;
-        if (fetchedUser && !user) {
-          setUser(fetchedUser);
+        try {
+          const res = await api.get('users/me');
+          const fetchedUser = res.data;
+          if (fetchedUser && !user) {
+            setUser(fetchedUser);
+          }
+        } catch (err) {
+          if (err.message.indexOf('401') !== -1) {
+            Cookies.remove('token');
+          };
         }
       }
       setLoading(false);
