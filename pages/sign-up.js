@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ClipLoader from 'react-spinners/ClipLoader';
+import PulseLoader from 'react-spinners/PulseLoader';
 import NavBar from '../components/NavBar';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
@@ -41,9 +41,18 @@ export default function SignUp() {
   if (sucess) {
     return (
       <>
-        <div>
-          <h2>Sign Up</h2>
-          <p>We have sent you an email message containing instructions to activate your account!</p>
+        <NavBar />
+        <div className="max-w-7xl px-5 mt-5 mx-auto">
+          <div className="mt-10 sm:mt-0">
+            <div className="md:grid md:grid-cols-3 md:gap-6">
+              <div className="md:col-span-1 px-3">
+                <div className="px-4 sm:px-0">
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">Sign Up</h3>
+                  <p className="mt-1 text-sm text-gray-600">We have sent you an email message containing instructions to activate your account!</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </>
     );
@@ -52,9 +61,18 @@ export default function SignUp() {
   if (error) {
     return (
       <>
-        <div>
-          <h2>Sign Up</h2>
-          <p>There was a problem processing your request: {errorMessage}</p>
+        <NavBar />
+        <div className="max-w-7xl px-5 mt-5 mx-auto">
+          <div className="mt-10 sm:mt-0">
+            <div className="md:grid md:grid-cols-3 md:gap-6">
+              <div className="md:col-span-1 px-3">
+                <div className="px-4 sm:px-0">
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">Sign Up</h3>
+                  <p className="mt-1 text-sm text-gray-600">There was a problem processing your request: {errorMessage}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </>
     );
@@ -109,13 +127,22 @@ export default function SignUp() {
                     </div>
                   </div>
                   <div className="px-4 py-3 bg-gray-50 text-center sm:px-6">
-                    <button
-                      type="submit"
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Sign-Up
-                    </button>
-                    <ClipLoader color="black" loading={loading} size={20} />
+                    {loading ? (
+                      <div className="inline-block text-center py-2 px-2 border border-transparent shadow-sm rounded-md h-10 w-20 bg-indigo-600 hover:bg-indigo-700">
+                        <PulseLoader
+                          color="white"
+                          loading={loading}
+                          size={9}
+                        />
+                      </div>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        Sign-Up
+                      </button>
+                    )}
                   </div>
                 </div>
               </form>
